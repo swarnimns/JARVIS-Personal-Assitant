@@ -1,41 +1,55 @@
 import subprocess
 
+from app.automation.process.process_manager import ProcessManager
 from app.config.app_registry import find_application
 from app.responses.response import Response
 
+
 class DesktopHandler:
+
+    def __init__(self):
+
+        self.process_manager = ProcessManager()
 
     def open_application(self, app_name: str):
 
+        # Find the application in the registry
         app = find_application(app_name.lower())
 
+        # Application not found
         if app is None:
-        
-                return Response(
-                    success=False,
-                    message=f"{app_name} is not registered."
-                )
 
+            return Response(
+                success=False,
+                message=f"{app_name} is not registered."
+            )
+
+        # Check if it is already running
+        running_process = self.process_manager.find_running_process(app)
+
+        if running_process:
+
+            return Response(
+                success=True,
+                message=f"{app.name} is already open."
+            )
+
+        #here for bring to front 
+
+
+        # Open the application
         try:
 
-             subprocess.Popen(app.path)
+            subprocess.Popen(app.path)
 
-             return Response(
-                  success=True,
-                  message=f"Opening {app.name}..."
-             )
+            return Response(
+                success=True,
+                message=f"Opening {app.name}..."
+            )
 
         except Exception as e:
 
-             return Response(
-                  success=False,
-                  message=f"Error: {e}"
-             )
-        
-           
-
-
-
-   
-
-    
+            return Response(
+                success=False,
+                message=f"Error: {e}"
+            )
