@@ -1,9 +1,19 @@
+from app.core.command import Command
+from app.core.command_engine import CommandEngine
+
+
 def main():
-    print("===================================")
-    print("        JARVIS v0.1")
-    print(" Personal AI Desktop Assistant")
-    print("===================================")
-    print("System Starting...")
+
+    print("Starting Jarvis...\n")
+
+    engine = CommandEngine()
+
+    command = Command(
+        action="open",
+        target="Chrome"
+    )
+
+    engine.process(command)
 
 
 if __name__ == "__main__":
