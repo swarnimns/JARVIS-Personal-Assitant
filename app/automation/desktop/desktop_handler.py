@@ -1,13 +1,13 @@
 import subprocess
 
-from app.config.app_registry import APPLICATIONS
+from app.config.app_registry import find_application
 from app.responses.response import Response
 
 class DesktopHandler:
 
     def open_application(self, app_name: str):
 
-        app = APPLICATIONS.get(app_name.lower())
+        app = find_application(app_name.lower())
 
         if app is None:
         
@@ -18,11 +18,11 @@ class DesktopHandler:
 
         try:
 
-             subprocess.Popen(app)
+             subprocess.Popen(app.path)
 
              return Response(
                   success=True,
-                  message=f"Opening {app_name}..."
+                  message=f"Opening {app.name}..."
              )
 
         except Exception as e:
