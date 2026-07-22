@@ -1,6 +1,6 @@
 from app.core.command import Command
 from app.automation.desktop.desktop_handler import DesktopHandler
-
+from app.responses.response import Response
 
 class CommandEngine:
 
@@ -22,8 +22,11 @@ class CommandEngine:
 
         if command.action == "open":
 
-            self.desktop.open_application(command.target)
+            response = self.desktop.open_application(command.target)
+            return response
 
         else:
-
-            print("Unknown command.")
+            return Response(
+                success=False,
+                message=f"Unknown action: {command.action}"
+            )

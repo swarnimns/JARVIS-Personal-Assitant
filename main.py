@@ -1,5 +1,7 @@
 from app.core.command_engine import CommandEngine
 from app.parser.command_parser import CommandParser
+from app.responses.response_manager import ResponseManager
+from app.responses.response import Response
 
 
 def main():
@@ -10,6 +12,7 @@ def main():
 
     parser = CommandParser()
     engine = CommandEngine()
+    response_manager = ResponseManager()
 
     while True:
 
@@ -22,10 +25,17 @@ def main():
         command = parser.parse(user_input)
 
         if command is None:
-            print("I couldn't understand that command.")
+            response_manager.show(
+                Response(
+                    success=False,
+                    message="I couldn't understand that command."
+                )
+            )
             continue
 
-        engine.process(command)
+        response = engine.process(command)
+
+        response_manager.show(response)
 
 
 if __name__ == "__main__":

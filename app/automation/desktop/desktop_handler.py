@@ -1,7 +1,7 @@
 import subprocess
 
 from app.config.app_registry import APPLICATIONS
-
+from app.responses.response import Response
 
 class DesktopHandler:
 
@@ -10,15 +10,32 @@ class DesktopHandler:
         app = APPLICATIONS.get(app_name.lower())
 
         if app is None:
-            print(f"{app_name} is not registered.")
-            return
+        
+                return Response(
+                    success=False,
+                    message=f"{app_name} is not registered."
+                )
 
         try:
 
-            subprocess.Popen(app)
+             subprocess.Popen(app)
 
-            print(f"Opening {app_name}...")
+             return Response(
+                  success=True,
+                  message=f"Opening {app_name}..."
+             )
 
         except Exception as e:
 
-            print(f"Error: {e}")
+             return Response(
+                  success=False,
+                  message=f"Error: {e}"
+             )
+        
+           
+
+
+
+   
+
+    
