@@ -3,5 +3,6 @@ APPLICATIONS = {
 
     "notepad": "notepad.exe",
 
-    "calculator": "calc.exe"
+    "calculator": "calc.exe",
+
 }

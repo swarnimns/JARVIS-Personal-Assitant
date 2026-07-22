@@ -12,4 +12,5 @@ FILLER_WORDS = {
     "would",
     "hey",
     "jarvis",
+    "you",
 }
