@@ -3,6 +3,7 @@ import subprocess
 from app.automation.process.process_manager import ProcessManager
 from app.config.app_registry import find_application
 from app.responses.response import Response
+from app.automation.window.window_manager import WindowManager
 
 
 class DesktopHandler:
@@ -10,6 +11,7 @@ class DesktopHandler:
     def __init__(self):
 
         self.process_manager = ProcessManager()
+        self.window_manager = WindowManager()
 
     def open_application(self, app_name: str):
 
@@ -29,12 +31,20 @@ class DesktopHandler:
 
         if running_process:
 
+            focused = self.window_manager.bring_to_front(app)
+
+            if focused:
+                return Response(
+                    success=True,
+                    message=f"Bringing {app.name} to the front..."
+                )
+
             return Response(
-                success=True,
-                message=f"{app.name} is already open."
+            success=True,
+            message=f"{app.name} is already open."
             )
 
-        #here for bring to front 
+       
 
 
         # Open the application

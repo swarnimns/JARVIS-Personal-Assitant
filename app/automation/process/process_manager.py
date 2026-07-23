@@ -13,6 +13,14 @@ class ProcessManager:
         for process in processes:
 
             if process.name() == application.process:
+
+                #
+                print(
+                    f"PID: {process.pid} | "
+                    f"Name: {process.name()} | "
+                    f"Exe: {process.exe()}"
+                )
+
                 return process
 
         return None
