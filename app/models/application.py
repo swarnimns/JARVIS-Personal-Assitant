@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import List
 
 
 @dataclass
@@ -16,7 +15,7 @@ class Application:
     # If not specified, we'll use `process`
     window_process: str | None = None
 
-    aliases: List[str] = None
+    aliases: list[str] = None
 
     def __post_init__(self):
 
