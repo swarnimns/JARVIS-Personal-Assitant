@@ -55,10 +55,3 @@ class DesktopHandler:
             success=True,
             message=f"Opening {app.name}..."
         )
-
-        #except Exception as e:
-
-         #   return Response(
-          #      success=False,
-           #     message=f"Error: {e}"
-            #)

@@ -7,6 +7,7 @@ APPLICATIONS = {
         name="calculator",
         path="calc.exe",
         process="CalculatorApp.exe",
+        window_process="ApplicationFrameHost.exe",
         aliases=[
             "calc"
         ]
