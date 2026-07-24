@@ -55,7 +55,8 @@ APPLICATIONS = {
     "steam": Application(
         name="steam",
         path=r"C:\Program Files (x86)\Steam\Steam.exe",
-        process="Steam.exe",
+        process="steam.exe",
+        window_process="steamwebhelper.exe",
         aliases=[
             "games",
             "game launcher"

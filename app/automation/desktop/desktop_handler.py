@@ -35,31 +35,30 @@ class DesktopHandler:
 
             if focused:
                 return Response(
-                    success=True,
-                    message=f"Bringing {app.name} to the front..."
+                success=True,
+                message=f"Bringing {app.name} to the front..."
                 )
 
-            return Response(
-            success=True,
-            message=f"{app.name} is already open."
-            )
-
-       
-
-
-        # Open the application
-        try:
-
+        # Process exists, but no visible window.
+        # Launch the application.
             subprocess.Popen(app.path)
 
             return Response(
-                success=True,
-                message=f"Opening {app.name}..."
+            success=True,
+            message=f"Opening {app.name}..."
             )
 
-        except Exception as e:
+        # Application isn't running at all.
+        subprocess.Popen(app.path)
 
-            return Response(
-                success=False,
-                message=f"Error: {e}"
-            )
+        return Response(
+            success=True,
+            message=f"Opening {app.name}..."
+        )
+
+        #except Exception as e:
+
+         #   return Response(
+          #      success=False,
+           #     message=f"Error: {e}"
+            #)

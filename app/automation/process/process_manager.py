@@ -2,31 +2,34 @@ import psutil
 
 from app.models.application import Application
 
+
 class ProcessManager:
 
     def find_running_process(self, application: Application):
 
-        # Ask Windows for all running processes
-        processes = psutil.process_iter()
+        for process in psutil.process_iter(["pid", "name"]):
 
-        # Loop through every process
-        for process in processes:
+            try:
 
-            if process.name() == application.process:
+                process_name = process.info["name"]
 
-                #
-                print(
-                    f"PID: {process.pid} | "
-                    f"Name: {process.name()} | "
-                    f"Exe: {process.exe()}"
-                )
+                if (
+                    process_name
+                    and process_name.lower() == application.process.lower()
+                ):
 
-                return process
+                    print(
+                        f"PID: {process.pid} | "
+                        f"Name: {process_name}"
+                    )
+
+                    return process
+
+            except (
+                psutil.NoSuchProcess,
+                psutil.AccessDenied,
+                psutil.ZombieProcess,
+            ):
+                continue
 
         return None
-
-        # Compare the process name
-
-        # If found, return the process
-
-        # Otherwise return None

@@ -20,22 +20,38 @@ class WindowManager:
 
             # Some windows disappear while we're enumerating them
             try:
-                thread_id, pid = win32process.GetWindowThreadProcessId(hwnd)
+                _, pid = win32process.GetWindowThreadProcessId(hwnd)
             except Exception:
                 return True
 
             # Some processes may disappear before we can inspect them
             try:
                 process_name = psutil.Process(pid).name()
+
+                title = win32gui.GetWindowText(hwnd)
+
+                if "steam" in title.lower():                  
+                    print(f"TITLE: {title}")
+                    print(f"PROCESS: {process_name}")
+                    print(f"PID: {pid}")
+                    print("-" * 40)
+
             except (
                 psutil.NoSuchProcess,
                 psutil.AccessDenied,
-                psutil.ZombieProcess
+                psutil.ZombieProcess,
             ):
                 return True
 
             # Is this the application we're looking for?
-            if process_name.lower() == application.process.lower():
+            if process_name.lower() == application.window_process.lower():
+
+                print(f"Matched window: {process_name}")
+
+                # We found the correct window.
+                # Even if Windows refuses to focus it,
+                # we still consider it found.
+                found = True
 
                 try:
                     # Restore if minimized
@@ -44,12 +60,10 @@ class WindowManager:
                     # Bring to front
                     win32gui.SetForegroundWindow(hwnd)
 
-                    found = True
-
                 except Exception as e:
                     print(f"Window Error: {e}")
 
-                # Stop searching
+                # Stop searching after the first valid window
                 return False
 
             return True
@@ -58,5 +72,7 @@ class WindowManager:
             win32gui.EnumWindows(callback, None)
         except Exception as e:
             print(f"EnumWindows Error: {e}")
+
+        print("Returning:", found)
 
         return found
