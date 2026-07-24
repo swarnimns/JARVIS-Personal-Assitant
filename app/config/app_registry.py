@@ -1,6 +1,5 @@
 from app.models.application import Application
 
-
 APPLICATIONS = {
 
     "calculator": Application(
@@ -96,6 +95,18 @@ APPLICATIONS = {
             "document"
         ]
     ),
+
+    #"whatsapp": Application(
+    #name="whatsapp",
+     #   path=r"explorer.exe shell:appsFolder\5319275A.WhatsAppDesktop_cv1g1gvanyjgm!App",
+     #   process="WhatsApp.exe",
+      #  window_process="ApplicationFrameHost.exe",
+      #  aliases=[
+       #     "wa",
+      #      "whatsapp",
+       #     "whats app"
+      #  ]
+    #),
 
 }
 
