@@ -3,6 +3,7 @@ ACTION_ALIASES = {
     "launch": "open",
     "start": "open",
     "run": "open",
+    "close": "close",
 }
 
 FILLER_WORDS = {

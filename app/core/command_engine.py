@@ -25,6 +25,10 @@ class CommandEngine:
             response = self.desktop.open_application(command.target)
             return response
 
+        elif command.action == "close":
+            response = self.desktop.close_application(command.target)
+            return response
+
         else:
             return Response(
                 success=False,
