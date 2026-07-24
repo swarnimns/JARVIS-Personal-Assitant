@@ -18,6 +18,18 @@ class WindowManager:
             if not win32gui.IsWindowVisible(hwnd):
                 return True
 
+            # Get the window title
+            title = win32gui.GetWindowText(hwnd)
+
+            # Ignore helper windows with no title
+            if not title.strip():
+                return True
+
+            # Ignore the Windows desktop
+            if title == "Program Manager":
+                return True
+
+
             # Some windows disappear while we're enumerating them
             try:
                 _, pid = win32process.GetWindowThreadProcessId(hwnd)
@@ -46,7 +58,7 @@ class WindowManager:
             # Is this the application we're looking for?
             if process_name.lower() == application.window_process.lower():
 
-                print(f"Matched window: {process_name}")
+                print(f"Matched window: '{title}' ({process_name})")
 
                 # We found the correct window.
                 # Even if Windows refuses to focus it,
