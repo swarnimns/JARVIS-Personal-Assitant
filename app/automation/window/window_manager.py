@@ -10,9 +10,8 @@ class WindowManager:
 
     Responsibilities:
     - Find visible application windows
-    - Ignore helper/hidden windows
-    - Restore minimized windows
-    - Bring existing windows to the foreground
+    - Bring windows to the foreground
+    - Close windows gracefully
     """
 
     def bring_to_front(self, application):
@@ -27,24 +26,24 @@ class WindowManager:
             if not win32gui.IsWindowVisible(hwnd):
                 return True
 
-            # Get the window title
+            # Window title
             title = win32gui.GetWindowText(hwnd)
 
-            # Ignore helper windows with no title
+            # Ignore helper windows
             if not title.strip():
                 return True
 
-            # Ignore the Windows desktop
+            # Ignore the desktop
             if title == "Program Manager":
                 return True
 
-            # Some windows disappear while we're enumerating them
+            # Get the window's process ID
             try:
                 _, pid = win32process.GetWindowThreadProcessId(hwnd)
             except Exception:
                 return True
 
-            # Some processes may disappear before we can inspect them
+            # Get the process name
             try:
                 process_name = psutil.Process(pid).name()
 
@@ -58,8 +57,7 @@ class WindowManager:
             # ---------------------------------------------------------
             # DEBUGGING
             #
-            # Uncomment when debugging applications that don't
-            # come to the front correctly.
+            # Uncomment when debugging a specific application.
             #
             # if "steam" in title.lower():
             #     print(f"TITLE: {title}")
@@ -67,19 +65,10 @@ class WindowManager:
             #     print(f"PID: {pid}")
             #     print("-" * 40)
             #
-            # Replace "steam" with:
-            #   calculator
-            #   spotify
-            #   discord
-            #   chrome
-            # etc.
             # ---------------------------------------------------------
 
-            # Is this the application's window?
+            # Is this our application's window?
             if process_name.lower() == application.window_process.lower():
-
-                # Uncomment for debugging
-                # print(f"Matched window: '{title}' ({process_name})")
 
                 found = True
 
@@ -91,11 +80,9 @@ class WindowManager:
                     win32gui.SetForegroundWindow(hwnd)
 
                 except Exception:
-                    # Windows occasionally refuses to focus
-                    # even though we found the correct window.
                     pass
 
-                # Stop searching after the first match
+                # Stop searching
                 return False
 
             return True
@@ -103,10 +90,81 @@ class WindowManager:
         try:
             win32gui.EnumWindows(callback, None)
         except Exception:
-            # Ignore transient Win32 enumeration errors
             pass
 
-        # Uncomment for debugging
-        # print("Returning:", found)
+        return found
+
+
+    def close_window(self, application):
+
+        found = False
+
+        def callback(hwnd, extra):
+
+            nonlocal found
+
+            # Ignore invisible windows
+            if not win32gui.IsWindowVisible(hwnd):
+                return True
+
+            # Window title
+            title = win32gui.GetWindowText(hwnd)
+
+            # Ignore helper windows
+            if not title.strip():
+                return True
+
+            # Ignore the desktop
+            if title == "Program Manager":
+                return True
+
+            # Get the window's process ID
+            try:
+                _, pid = win32process.GetWindowThreadProcessId(hwnd)
+            except Exception:
+                return True
+
+            # Get the process name
+            try:
+                process_name = psutil.Process(pid).name()
+
+            except (
+                psutil.NoSuchProcess,
+                psutil.AccessDenied,
+                psutil.ZombieProcess,
+            ):
+                return True
+
+            # Is this our application's window?
+            if process_name.lower() == application.window_process.lower():
+
+                found = True
+
+                try:
+                    #Open it if you want to Debug.
+                    #print(f"Closing window: {title}")
+                    #print(f"HWND: {hwnd}")
+                    #print(f"PROCESS: {process_name}")
+
+                    # Politely ask Windows to close the window
+                    win32gui.PostMessage(
+                        hwnd,
+                        win32con.WM_SYSCOMMAND,
+                        win32con.SC_CLOSE,
+                        0
+                    )
+
+                except Exception as e:
+                    print(e)
+
+                # Stop searching
+                return False
+
+            return True
+
+        try:
+            win32gui.EnumWindows(callback, None)
+        except Exception:
+            pass
 
         return found

@@ -33,3 +33,22 @@ class ProcessManager:
                 continue
 
         return None
+
+
+    def terminate_process(self, process):
+
+        try:
+
+            process.terminate()
+
+            process.wait(timeout=5)
+
+            return True
+
+        except (
+            psutil.NoSuchProcess,
+            psutil.AccessDenied,
+            psutil.TimeoutExpired
+        ):
+
+            return False
