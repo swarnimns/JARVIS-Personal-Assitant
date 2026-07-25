@@ -8,4 +8,6 @@ class Website:
 
     url: str
 
+    search_url: str
+
     aliases: list[str]

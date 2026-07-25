@@ -17,7 +17,7 @@ APPLICATIONS = {
         path=r"C:\Program Files\Google\Chrome\Application\chrome.exe",
         process="chrome.exe",
         aliases=[
-            "browser",
+            "ch",
             "google chrome"
         ]
     ),
@@ -96,18 +96,28 @@ APPLICATIONS = {
         ]
     ),
 
+    "edge": Application(
+    name="edge",
+    path=r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
+    process="msedge.exe",
+    window_process="msedge.exe",
+    aliases=[
+        "browser",
+        "microsoft edge"
+    ]
+    ),
+
     #"whatsapp": Application(
     #name="whatsapp",
-     #   path=r"explorer.exe shell:appsFolder\5319275A.WhatsAppDesktop_cv1g1gvanyjgm!App",
-     #   process="WhatsApp.exe",
-      #  window_process="ApplicationFrameHost.exe",
-      #  aliases=[
-       #     "wa",
-      #      "whatsapp",
-       #     "whats app"
-      #  ]
+    #path="shell:AppsFolder\\5319275A.WhatsAppDesktop_cv1g1gvanyjgm!App",
+    #process="WhatsApp.Root",
+    #window_process="WhatsApp.Root",
+    #aliases=[
+    #    "wa",
+    #    "whatsapp",
+    #    "chat"
+    #]
     #),
-
 }
 
 

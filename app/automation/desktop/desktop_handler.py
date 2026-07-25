@@ -40,7 +40,7 @@ class DesktopHandler:
                 )
 
         # Process exists, but no visible window.
-        # Launch the application.
+        # Launch the application.  
             subprocess.Popen(app.path)
 
             return Response(
