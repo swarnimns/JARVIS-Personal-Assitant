@@ -39,6 +39,15 @@ class CommandEngine:
 
             return response
 
+        elif command.action == "search":
+            response = self.browser.search(
+                command.target,
+                command.query
+            )
+
+            return response
+        
+
         elif command.action == "close":
             response = self.desktop.close_application(command.target)
             return response
