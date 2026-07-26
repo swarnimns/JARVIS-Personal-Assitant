@@ -1,3 +1,5 @@
+import string
+
 from app.core.command import Command
 from app.config.parser_config import ACTION_ALIASES, FILLER_WORDS
 from app.config.web_registry import find_website
@@ -9,6 +11,11 @@ class CommandParser:
 
         # Normalize user input
         text = text.strip().lower()
+
+        # Remove punctuation
+        text = text.translate(
+            str.maketrans("","", string.punctuation)
+        )
 
         # Split into individual words
         words = text.split()
@@ -61,13 +68,13 @@ class CommandParser:
                 # Example:
                 # search youtube lofi music
                 else:
-                    query = " ".join(words[2:])
+                    query = " ".join(words[2:]).strip()
 
             # No website specified -> default to Google
             else:
 
                 target = "google"
-                query = " ".join(words[1:])
+                query = " ".join(words[1:]).strip()
 
             return Command(
                 action="search",
