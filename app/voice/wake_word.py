@@ -12,4 +12,6 @@ WAKE_PHRASES = [
 
     "if friday",
 
+    "here Friday",
+
 ]

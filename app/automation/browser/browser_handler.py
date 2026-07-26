@@ -44,7 +44,7 @@ class BrowserHandler:
 
             return Response(
                 success=True,
-                message=f"Searching {website.name} for '{query}'..."
+                message=f"Searching {website.name}..."
             )
 
         #Remove extra spaces
